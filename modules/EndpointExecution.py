@@ -28,7 +28,7 @@ def execute_endpoint(endpoint, test_data):
     if 'payload_file' in endpoint_data and "payload" not in endpoint_data:
         endpoint_data['payload'] = load_endpoint_data(f'data/{test_data["name"]}/{endpoint_data['payload_file']}', test_data['variables'])
     
-    client = APIClient(test_data["servers"][endpoint_data['server']], endpoint_data["url"], endpoint_data["method"], endpoint_data["headers"])
+    client = APIClient(test_data["servers"][endpoint_data['server']], endpoint_data["url"], endpoint_data["method"], endpoint_data.get("headers",[]))
     client.check(endpoint_data.get("expected_code",200),endpoint_data.get("expected_text",None),endpoint_data.get('payload',None))
 
 def execute_endpoints(test_data):
