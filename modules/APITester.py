@@ -3,10 +3,6 @@ from urllib.parse import quote
 import requests
 
 
-import requests
-import json
-from urllib.parse import quote
-
 class APIClient:
     _instances = {}
 
