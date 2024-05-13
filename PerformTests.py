@@ -1,7 +1,7 @@
 import yaml
 import json
 import argparse
-from modules.VariableTreating import increment_test_variables,replace_within_vars
+from modules.VariableTreating import increment_test_variables,replace_within_vars,load_workflow_file
 from modules.EndpointExecution import execute_endpoints
 import copy
 from modules.utils import pprint
@@ -32,6 +32,7 @@ with open(args.filename, "r") as file:
     data_save=(copy.deepcopy(test_data))
     increment_test_variables(test_data,False)
     replace_within_vars(test_data)
+    load_workflow_file(test_data)
 
 try:
     execute_endpoints(copy.deepcopy(test_data))

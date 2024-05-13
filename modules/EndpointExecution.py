@@ -33,16 +33,16 @@ def is_endpoint_for_execution(endpoint, test_data, endpoint_data):
         endpoint_in_workflow = endpoint in test_data["workflow"].get("endpoints", [])
         is_workflow_execute = test_data["workflow"].get("type", "") == "execute"
         
-        return endpoint_in_workflow != is_workflow_execute
+        return endpoint_in_workflow == is_workflow_execute
     
-    return False
+    return True
 
 def process_result(test_data,endpoint_data,response):
     dataResponse=response.json()
     test_data["variables"][endpoint_data["result"]["name"]]=dataResponse
 
-    if "keys" not in endpoint_data:
-        for key in endpoint_data["keys"]:
+    if "keys" not in endpoint_data["result"]:
+        for key in endpoint_data["result"]["keys"]:
             test_data["variables"][endpoint_data["result"]["name"]]= test_data["variables"][endpoint_data["result"]["name"]][key]
 
 def request_call(test_data,endpoint_data):
