@@ -1,7 +1,7 @@
 import yaml
 import json
 import argparse
-from modules.VariableTreating import increment_test_variables,replace_within_vars,load_workflow_file
+from modules.VariableTreating import increment_test_variables,replace_within_vars,load_workflow_file,load_variables_from_file
 from modules.EndpointExecution import execute_endpoints
 import copy
 from modules.utils import pprint
@@ -27,7 +27,10 @@ with open(args.filename, "r") as file:
         test_data = json.load(file)
     else:
         raise Exception("Invalid file extension used for the configuration.")
-    
+    if 'variables_files' in test_data:
+        for file_name in test_data['variables_files']:
+            load_variables_from_file(test_data,file_name)
+
     increment_test_variables(test_data,True)
     data_save=(copy.deepcopy(test_data))
     increment_test_variables(test_data,False)

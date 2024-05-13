@@ -23,3 +23,18 @@ def load_workflow_file(test_data):
             elif '.yaml' in file_location:
                 test_data['workflow']= yaml.safe_load(file.read())
             
+def load_variables_from_file(test_data,file_name):
+    file_location=f'variables/{test_data["name"]}/{file_name}'
+    if 'variables' not in test_data:
+        test_data['variables'] = {}
+    with open(file_location, 'r') as file:
+        data={}
+        if '.json' in file_location:
+            data= json.loads(file.read())
+        elif '.yaml' in file_location:
+            data= yaml.safe_load(file.read())
+        
+        # Keep the value that is not in the file
+        for key, value in data.items():
+            if key not in test_data['variables']:
+                test_data['variables'][key] = value
