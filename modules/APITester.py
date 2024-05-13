@@ -54,6 +54,7 @@ class APIClient:
         self.check_text(response,expected_text)    
 
         print("Successfully tested "+self.endpoint)
+        return response
 
     def set_endpoint(self, endpoint):
         self.endpoint = endpoint
