@@ -1,7 +1,7 @@
 import json
 from urllib.parse import quote
 import requests
-
+from .utils import pprint
 
 class APIClient:
     _instances = {}
@@ -43,13 +43,13 @@ class APIClient:
             assert expected_text == response.text, f"Expected text {expected_text}, but got {response.text}"
 
     def check(self, expected_status_code=200, expected_text=None,payload=None):
-        print("Testing "+self.endpoint+"\n")
-
+        print("Testing "+self.endpoint)
+        pprint(payload)
         response = self.get_response(payload)
         self.check_status_code(response,expected_status_code)     
         self.check_text(response,expected_text)    
 
-        print("Successfully tested "+self.endpoint)
+        print("Successfully tested "+self.endpoint+"\n")
         return response
 
     def set_endpoint(self, endpoint):

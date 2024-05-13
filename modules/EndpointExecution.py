@@ -13,12 +13,12 @@ def replace_vars(content, variables):
         
     return json.loads(content) if isJson else content
 
-def load_endpoint_data(location):
+def load_endpoint_data(location,variables):
     with open(location, 'r') as file:
         if '.json' in location:
-            return json.loads(file.read())
+            return json.loads(replace_vars(file.read(),variables))
         elif '.yaml' in location:
-            return yaml.safe_load(file.read())
+            return yaml.safe_load(replace_vars(file.read(),variables))
         return "Invalid format"
 
 
@@ -39,11 +39,11 @@ def is_endpoint_for_execution(endpoint, test_data, endpoint_data):
 
 def process_result(test_data,endpoint_data,response):
     dataResponse=response.json()
-    test_data["variables"][endpoint_data["result"]["name"]]=dataResponse
+    test_data["variables"][endpoint_data["result"]["name"]]={"value":dataResponse}
 
-    if "keys" not in endpoint_data["result"]:
+    if "keys"  in endpoint_data["result"]:
         for key in endpoint_data["result"]["keys"]:
-            test_data["variables"][endpoint_data["result"]["name"]]= test_data["variables"][endpoint_data["result"]["name"]][key]
+            test_data["variables"][endpoint_data["result"]["name"]]["value"]= test_data["variables"][endpoint_data["result"]["name"]][key]
 
 def request_call(test_data,endpoint_data):
     times = endpoint_data.get("repeat",1)
@@ -57,9 +57,9 @@ def request_call(test_data,endpoint_data):
 
 def get_payload(endpoint_data,test_data):
     if 'payload_file' in endpoint_data and "payload" not in endpoint_data:
-        endpoint_data['payload'] = load_endpoint_data(f'data/{test_data["name"]}/{endpoint_data['payload_file']}')
+        endpoint_data['payload'] = load_endpoint_data(f'data/{test_data["name"]}/{endpoint_data['payload_file']}',test_data['variables'])
     
-    if "payload" in endpoint_data:
+    elif "payload" in endpoint_data:
         endpoint_data['payload'] = replace_vars(endpoint_data['payload'], test_data['variables'])
                 
 
@@ -74,7 +74,7 @@ def execute_endpoint(endpoint, test_data):
     if not "url_file" in endpoint_data:
         request_call(test_data,endpoint_data)
     else:
-        urls= load_endpoint_data(f'data/{test_data["name"]}/{endpoint_data['url_file']}')
+        urls= load_endpoint_data(f'data/{test_data["name"]}/{endpoint_data['url_file']}',test_data['variables'])
         for url in urls:
             endpoint_data["url"]=url
             request_call(test_data,endpoint_data)
