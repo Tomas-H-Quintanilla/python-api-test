@@ -1,10 +1,9 @@
 import yaml
 import argparse
-import json
-from collections import OrderedDict
-from modules.VariableTreating import increment_test_variables
+from modules.VariableTreating import increment_test_variables,replace_within_vars
 from modules.EndpointExecution import execute_endpoints
-
+import copy
+from modules.utils import pprint
 
 parser = argparse.ArgumentParser(
     description='Process the file for the test execution.')
@@ -21,9 +20,18 @@ if not args.filename:
 test_data = None
 # Open the YAML file
 with open(args.filename, "r") as yaml_file:
+    
     # Load the YAML data
     test_data = yaml.safe_load(yaml_file)
-    increment_test_variables(test_data)
+    increment_test_variables(test_data,True)
+    data_save=(copy.deepcopy(test_data))
+    increment_test_variables(test_data,False)
+    replace_within_vars(test_data)
 
-execute_endpoints(test_data)
-
+try:
+    execute_endpoints(copy.deepcopy(test_data))
+except Exception as e:
+    print(e)
+finally:
+    with open(args.filename, "w") as yaml_file:
+        yaml.dump(data_save, yaml_file, sort_keys=False)
