@@ -1,5 +1,6 @@
 import json
 from .APITester import APIClient
+import yaml
 
 def replace_vars(content, variables):
     isJson = False
@@ -12,23 +13,29 @@ def replace_vars(content, variables):
         
     return json.loads(content) if isJson else content
 
-def load_endpoint_data(json_location):
-    with open(json_location, 'r') as file:
-        data = json.loads(file.read())
-        return data
+def load_endpoint_data(location):
+    with open(location, 'r') as file:
+        if '.json' in location:
+            return json.loads(file.read())
+        elif '.yaml' in location:
+            return yaml.safe_load(file.read())
+        return "Invalid format"
 
-def is_endpoint_for_execution(endpoint,test_data,endpoint_data):
+
+
+def is_endpoint_for_execution(endpoint, test_data, endpoint_data):
+    endpoint_data = test_data["endpoints"].get(endpoint, {})
     
-
-    endpoint_data = test_data["endpoints"][endpoint]
-    response=True
-
     if "execute" in endpoint_data:
-        response= endpoint_data["execute"]
-    elif "execute_list" in test_data and endpoint in test_data["execute_list"]:
-        response= test_data["execute_list"]["endpoint"]
-
-    return response
+        return endpoint_data["execute"]
+    
+    if "workflow" in test_data:
+        endpoint_in_workflow = endpoint in test_data["workflow"].get("endpoints", [])
+        is_workflow_execute = test_data["workflow"].get("type", "") == "execute"
+        
+        return endpoint_in_workflow != is_workflow_execute
+    
+    return False
 
 def process_result(test_data,endpoint_data,response):
     dataResponse=response.json()
@@ -63,7 +70,7 @@ def execute_endpoint(endpoint, test_data):
         return
 
     get_payload(endpoint_data,test_data)
-    
+
     if not "url_file" in endpoint_data:
         request_call(test_data,endpoint_data)
     else:

@@ -1,4 +1,5 @@
 import yaml
+import json
 import argparse
 from modules.VariableTreating import increment_test_variables,replace_within_vars
 from modules.EndpointExecution import execute_endpoints
@@ -18,11 +19,15 @@ if not args.filename:
     exit(500)
 
 test_data = None
-# Open the YAML file
-with open(args.filename, "r") as yaml_file:
+
+with open(args.filename, "r") as file:
+    if args.filename.endswith(".yaml"):
+        test_data = yaml.safe_load(file)
+    elif args.filename.endswith(".json"):
+        test_data = json.load(file)
+    else:
+        raise Exception("Invalid file extension used for the configuration.")
     
-    # Load the YAML data
-    test_data = yaml.safe_load(yaml_file)
     increment_test_variables(test_data,True)
     data_save=(copy.deepcopy(test_data))
     increment_test_variables(test_data,False)
