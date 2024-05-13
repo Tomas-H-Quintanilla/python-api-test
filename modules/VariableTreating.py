@@ -1,5 +1,5 @@
 import json
-
+from .EndpointExecution import replace_vars
 import yaml
 def increment_test_variables(test_data,save=False):
     for variable in test_data["variables"]:
@@ -10,11 +10,9 @@ def increment_test_variables(test_data,save=False):
     
 def replace_within_vars(test_data):
 
-    content = json.dumps(test_data["variables"])
-    for variable, value in test_data["variables"].items():
-            content = content.replace(f'${variable}$',str(value['value']))
+    content = replace_vars(json.dumps(test_data["variables"]),test_data["variables"])
 
-    return json.loads(content)
+    test_data["variables"]= json.loads(content)
         
 def load_workflow_file(test_data):
     if "workflow_file" in test_data and "workflow" not in test_data:

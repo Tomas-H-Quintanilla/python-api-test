@@ -43,7 +43,7 @@ def process_result(test_data,endpoint_data,response):
 
     if "keys"  in endpoint_data["result"]:
         for key in endpoint_data["result"]["keys"]:
-            test_data["variables"][endpoint_data["result"]["name"]]["value"]= test_data["variables"][endpoint_data["result"]["name"]][key]
+            test_data["variables"][endpoint_data["result"]["name"]]["value"]= test_data["variables"][endpoint_data["result"]["name"]]["value"][key]
 
 def request_call(test_data,endpoint_data):
     times = endpoint_data.get("repeat",1)
