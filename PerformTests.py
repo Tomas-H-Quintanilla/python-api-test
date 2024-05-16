@@ -1,10 +1,11 @@
 import yaml
 import json
 import argparse
-from modules.VariableTreating import increment_test_variables,replace_within_vars,load_workflow_file,load_variables_from_file
+from modules.VariableTreating import increment_test_variables,replace_within_vars,load_workflow_file,load_variables_from_files,save_variables_in_files
 from modules.EndpointExecution import execute_endpoints
 import copy
 from modules.utils import pprint
+
 
 parser = argparse.ArgumentParser(
     description='Process the file for the test execution.')
@@ -27,9 +28,9 @@ with open(args.filename, "r") as file:
         test_data = json.load(file)
     else:
         raise Exception("Invalid file extension used for the configuration.")
+    
     if 'variables_files' in test_data:
-        for file_name in test_data['variables_files']:
-            load_variables_from_file(test_data,file_name)
+        load_variables_from_files(test_data)
 
     increment_test_variables(test_data,True)
     data_save=(copy.deepcopy(test_data))
@@ -42,5 +43,9 @@ try:
 except Exception as e:
     print(e)
 finally:
-    with open(args.filename, "w") as yaml_file:
-        yaml.dump(data_save, yaml_file, sort_keys=False)
+
+    if 'variables_files' not in test_data:
+        with open(args.filename, "w") as yaml_file:
+            yaml.dump(data_save, yaml_file, sort_keys=False)
+    else:
+        save_variables_in_files(data_save)
