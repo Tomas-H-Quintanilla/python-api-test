@@ -4,12 +4,6 @@ import yaml
 from .VariableTreating import replace_vars,load_file_data
 
 
-
-
-
-
-
-
 def is_endpoint_for_execution(endpoint, test_data, endpoint_data):
     endpoint_data = test_data["endpoints"].get(endpoint, {})
     
