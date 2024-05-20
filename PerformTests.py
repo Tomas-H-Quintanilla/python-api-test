@@ -24,16 +24,20 @@ test_data = None
 
 test_data=load_file_data(args.filename)
 test_data['name']=os.path.dirname(args.filename)
+test_data["variables"]={}
 if test_data == {}:
     raise Exception("Invalid file extension used for the configuration.")
 
+data_save=None
 if 'variables_files' in test_data:
     load_variables_from_files(test_data)
+
 
 increment_test_variables(test_data,True)
 data_save=(copy.deepcopy(test_data))
 increment_test_variables(test_data,False)
 replace_within_vars(test_data)
+
 load_workflow_file(test_data)
 
 try:
@@ -45,5 +49,5 @@ finally:
     if 'variables_files' not in test_data:
         with open(args.filename, "w") as yaml_file:
             yaml.dump(data_save, yaml_file, sort_keys=False)
-    else:
+    elif data_save:
         save_variables_in_files(data_save)
