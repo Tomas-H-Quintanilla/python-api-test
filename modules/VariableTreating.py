@@ -32,12 +32,16 @@ def replace_vars(content, variables):
     return json.loads(content) if isJson else content
 
 
-def load_file_data(location):
+def load_file_data(location,variables=None):
     with open(location, 'r') as file:
+        content=file.read()
+        if variables is not None:
+            content=replace_vars(content,variables)
+
         if '.json' in location:
-            return json.loads(file.read())
+            return json.loads(content)
         elif '.yaml' in location:
-            return yaml.safe_load(file.read())
+            return yaml.safe_load(content)
         return {}
 
 
