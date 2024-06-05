@@ -1,0 +1,2 @@
+type: "execute"
+endpoints: [all_posts]

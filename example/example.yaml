@@ -12,7 +12,7 @@ variables:
     type: string
     value: foo$PostCount$
 variables_files: [comments.yaml]
-workflow_files: [ignore_delete.json]
+workflow_file: execute_only_get_all.yaml
 servers:
   api_server: https://jsonplaceholder.typicode.com/
 endpoints:
