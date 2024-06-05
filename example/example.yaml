@@ -1,0 +1,58 @@
+name: example
+variables: 
+  UserId:
+    type: int
+    increment: false
+    value: 1
+  PostCount:
+    type: int
+    increment: true
+    value: 1
+  PostTitle:
+    type: string
+    value: foo$PostCount$
+variables_files: [comments.yaml]
+workflow_files: [ignore_delete.json]
+servers:
+  api_server: https://jsonplaceholder.typicode.com/
+endpoints:
+  all_posts:
+    url: /posts
+    method: GET
+    server: api_server
+    result:
+      name: PostId
+      keys:
+      - 0
+      - id
+  get_single_post:
+    url: /posts/$PostId$
+    method: GET
+    server: api_server
+  create_post:
+    url: /posts
+    method: POST
+    server: api_server
+    expected_code: 201
+    payload:
+    - postId: $PostId$
+    - name: bar
+    - userId: $UserId$
+  user_details:
+    url: /users/$UserId$
+    method: GET 
+    server: api_server
+    result:
+      name: UserInfo
+  create_comment:
+    url: /comments
+    method: POST
+    server: api_server
+    payload_file: create_comment.json
+  delete_comment:
+    url: /comments/1
+    execute: true
+    method: DELETE  
+    server: api_server
+
+

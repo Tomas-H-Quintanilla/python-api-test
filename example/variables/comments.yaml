@@ -1,0 +1,9 @@
+PostId:
+  type: int
+  increment: false
+  value: 1
+  file: comments.yaml
+CommentName:
+  type: string
+  value: Example Comment
+  file: comments.yaml

@@ -1,0 +1,4 @@
+{
+  "type": "ignore",
+  "endpoints": ["delete_comment"]
+}
