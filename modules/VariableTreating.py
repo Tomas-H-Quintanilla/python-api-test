@@ -45,11 +45,11 @@ def load_file_data(location,variables=None):
         return {}
 
 
-def increment_test_variables(test_data,save=False):
+def increment_test_variables(test_data):
     for variable in test_data["variables"]:
         info_variable = test_data["variables"][variable]
-        if "increment" in info_variable and info_variable["increment"] and (info_variable["save"] is save) :
-            info_variable["value"] += 2
+        if "increment" in info_variable and info_variable["increment"]:
+            info_variable["value"] += 1
 
     
 def replace_within_vars(test_data):
@@ -64,8 +64,6 @@ def load_workflow_file(test_data):
             
 def load_variables_from_file(test_data,file_name):
     file_location=f'{test_data["name"]}/variables/{file_name}'
-    if 'variables' not in test_data:
-        test_data['variables'] = {}
 
     data= load_file_data(file_location)
 
@@ -84,7 +82,7 @@ def save_variables_in_file(data_save,file_name):
     variables_save={}
 
     for variable_name in data_save['variables']:
-        if 'file' not in data_save['variables'][variable_name] and file_name!=data_save['variables'][variable_name]['file']:
+        if 'file' not in data_save['variables'][variable_name] or file_name!=data_save['variables'][variable_name]['file']:
             continue
         variables_save[variable_name]=data_save['variables'][variable_name]
 

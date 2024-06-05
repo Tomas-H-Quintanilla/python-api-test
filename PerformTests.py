@@ -24,7 +24,8 @@ test_data = None
 
 test_data=load_file_data(args.filename)
 test_data['name']=os.path.dirname(args.filename)
-test_data["variables"]={}
+if 'variables' not in test_data:
+        test_data['variables'] = {}
 if test_data == {}:
     raise Exception("Invalid file extension used for the configuration.")
 
@@ -33,9 +34,8 @@ if 'variables_files' in test_data:
     load_variables_from_files(test_data)
 
 
-increment_test_variables(test_data,True)
+increment_test_variables(test_data)
 data_save=(copy.deepcopy(test_data))
-increment_test_variables(test_data,False)
 replace_within_vars(test_data)
 
 load_workflow_file(test_data)
