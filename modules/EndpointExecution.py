@@ -40,7 +40,7 @@ def request_call(test_data,endpoint_data):
 
 def get_payload(endpoint_data,test_data):
     if 'payload_file' in endpoint_data and "payload" not in endpoint_data:
-        endpoint_data['payload'] = load_file_data(f'{test_data["name"]}/data/{endpoint_data['payload_file']}',test_data['variables'])
+        endpoint_data['payload'] = load_file_data(f'{test_data["name"]}/payloads/{endpoint_data['payload_file']}',test_data['variables'])
     
     elif "payload" in endpoint_data:
         endpoint_data['payload'] = replace_vars(endpoint_data['payload'], test_data['variables'])
@@ -57,7 +57,7 @@ def execute_endpoint(endpoint, test_data):
     if not "url_file" in endpoint_data:
         request_call(test_data,endpoint_data)
     else:
-        urls= load_file_data(f'{test_data["name"]}/data/{endpoint_data['url_file']}',test_data['variables'])
+        urls= load_file_data(f'{test_data["name"]}/urls/{endpoint_data['url_file']}',test_data['variables'])
         for url in urls:
             endpoint_data["url"]=url
             request_call(test_data,endpoint_data)

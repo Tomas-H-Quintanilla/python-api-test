@@ -1,6 +1,5 @@
 PostId:
   type: int
-  increment: false
   value: 1
   file: comments.yaml
 CommentName:

@@ -1,12 +1,10 @@
-name: example
 variables: 
   UserId:
     type: int
-    increment: false
     value: 1
   PostCount:
     type: int
-    increment: true
+    increment: 10
     value: 1
   PostTitle:
     type: string
@@ -14,10 +12,12 @@ variables:
 variables_files: [comments.yaml]
 # workflow_file: execute_only_get_all.yaml
 workflow:
-  type: "ignore"
+  type: skip
   endpoints: [all_posts]
-servers:
-  api_server: https://jsonplaceholder.typicode.com/
+# servers:
+#   api_server: https://jsonplaceholder.typicode.com/
+servers_file: main.json
+endpoint_files: [user.yaml]
 endpoints:
   all_posts:
     url: /posts
@@ -41,21 +41,19 @@ endpoints:
     - postId: $PostId$
     - name: bar
     - userId: $UserId$
-  user_details:
-    url: /users/$UserId$
-    method: GET 
-    server: api_server
-    result:
-      name: UserInfo
   create_comment:
     url: /comments
     method: POST
     server: api_server
+    expected_code: 201
     payload_file: create_comment.json
   delete_comment:
     url: /comments/1
     execute: true
     method: DELETE  
     server: api_server
-
-
+  todos:
+      url_file: todos.json
+      execute: false
+      method: GET
+      server: api_server

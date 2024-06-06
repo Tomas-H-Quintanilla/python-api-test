@@ -1,0 +1,6 @@
+  user_details:
+    url: /users/$UserId$
+    method: GET 
+    server: api_server
+    result:
+      name: UserInfo
