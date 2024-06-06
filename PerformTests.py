@@ -1,7 +1,7 @@
 import yaml
 import json
 import argparse
-from modules.VariableTreating import increment_test_variables,replace_within_vars,load_workflow_file,load_variables_from_files,load_servers_file
+from modules.VariableTreating import increment_test_variables,replace_within_vars,load_workflow_file,load_variables_from_files,load_servers_file,load_endpoints_files
 from modules.VariableTreating import save_variables_in_files,load_file_data
 from modules.EndpointExecution import execute_endpoints
 import copy
@@ -37,6 +37,7 @@ if __name__ == "__main__":
 
     
     load_servers_file(test_data)
+    load_endpoints_files(test_data)
 
 
    
