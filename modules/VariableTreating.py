@@ -72,6 +72,13 @@ def load_variables_from_file(test_data,file_name):
             test_data['variables'][key] = value
             test_data['variables'][key]['file']=file_name
 
+def load_servers_file(test_data):
+    if "servers_file" in test_data:
+        data_servers=load_file_data(f'{test_data["name"]}/servers/{test_data['servers_file']}')
+        for server in data_servers:
+            if server not in test_data:
+                test_data['servers'][server]=data_servers[server]
+
 def load_variables_from_files(test_data):
     if 'variables_files' in test_data:
         for file_name in test_data['variables_files']:
