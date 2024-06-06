@@ -17,7 +17,7 @@ workflow:
 # servers:
 #   api_server: https://jsonplaceholder.typicode.com/
 servers_file: main.json
-endpoint_files: [user.yaml]
+endpoints_files: [user.yaml]
 endpoints:
   all_posts:
     url: /posts

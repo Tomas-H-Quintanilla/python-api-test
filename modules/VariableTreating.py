@@ -87,8 +87,8 @@ def load_endpoints_files(test_data):
     if 'endpoints' not in test_data:
         test_data['endpoints']={}
 
-    if "endpoint_files" in test_data:
-        for endpoint_file in test_data["endpoint_files"]:
+    if "endpoints_files" in test_data:
+        for endpoint_file in test_data["endpoints_files"]:
             data_endpoints=load_file_data(f'{test_data["name"]}/endpoints/{endpoint_file}')
             for endpoint in data_endpoints:
                 if endpoint not in test_data:
