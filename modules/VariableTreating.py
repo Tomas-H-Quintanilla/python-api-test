@@ -49,7 +49,7 @@ def increment_test_variables(test_data):
     for variable in test_data["variables"]:
         info_variable = test_data["variables"][variable]
         if "increment" in info_variable and info_variable["increment"]:
-            info_variable["value"] += 1
+            info_variable["value"] += info_variable["increment"]
 
     
 def replace_within_vars(test_data):
