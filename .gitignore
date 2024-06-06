@@ -3,3 +3,5 @@ aclara*
 __pycache__
 *log*
 launch.json
+setup.py
+.vscode
