@@ -10,11 +10,12 @@ def is_endpoint_for_execution(endpoint, test_data, endpoint_data):
     if "execute" in endpoint_data:
         return endpoint_data["execute"]
     
-    if "workflow" in test_data:
+    
+
+    if "workflow" in test_data and test_data["workflow"].get("type", "") in {'execute', 'skip'}:
         endpoint_in_workflow = endpoint in test_data["workflow"].get("endpoints", [])
-        is_workflow_execute = test_data["workflow"].get("type", "") == "execute"
-        
-        return endpoint_in_workflow == is_workflow_execute
+
+        return endpoint_in_workflow == (test_data["workflow"]["type"]=='execute')
     
     return True
 
