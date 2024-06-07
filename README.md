@@ -140,6 +140,7 @@ endpoints:
     server: api_server
     execute: true | false
     repeat: integer
+    stop: boolean
     payload:
         - variable_name: primitive type | dictionary | array
     payload_file: location
@@ -156,6 +157,7 @@ endpoints:
 - **server**: To which the call will be executed.
 - **execute**_(optional)_: Whether the endpoint will be executed or not, it has preference over the workflow.
 - **repeat**_(optional)_: How many consecutive times shall the endpoint be executed.
+- **stop**_(optional)_: If is set to true, the endpoints after the one being executed will be skipped.
 - **payload**_(optional)_: To be sent to the server as request body. Can also be defined as file location. It can contain any data to be sent in `yaml` or `json` format.
 - **result**_(optional)_: You can use the result of the execution to set a variable. The `name` field defines its name and the `keys` field defines the keys to be accessed to set the value of the variable. We assume is a dictionary by default, but it can be anything.
 

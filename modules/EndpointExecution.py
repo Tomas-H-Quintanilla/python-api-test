@@ -3,6 +3,7 @@ from .APITester import APIClient
 import yaml
 from .VariableTreating import replace_vars,load_file_data
 
+stop_tests=False
 
 def is_endpoint_for_execution(endpoint, test_data, endpoint_data):
     endpoint_data = test_data["endpoints"].get(endpoint, {})
@@ -48,8 +49,11 @@ def get_payload(endpoint_data,test_data):
 
 
 def execute_endpoint(endpoint, test_data):
+    global stop_tests
     endpoint_data = test_data["endpoints"][endpoint]
-    if not is_endpoint_for_execution(endpoint,test_data,endpoint_data):
+
+
+    if stop_tests or not is_endpoint_for_execution(endpoint,test_data,endpoint_data):
         return
 
     get_payload(endpoint_data,test_data)
@@ -61,6 +65,9 @@ def execute_endpoint(endpoint, test_data):
         for url in urls:
             endpoint_data["url"]=url
             request_call(test_data,endpoint_data)
+    
+    if "stop" in endpoint_data:
+        stop_tests=endpoint_data['stop']
          
        
 
