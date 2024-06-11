@@ -6,6 +6,10 @@ A simplified framework to perform Python API tests. The user defines a simple `.
 
 In order to use it the user needs to define a file with the test execution plan. The file has multiple options available and configuration settings that must be taken into account, in the example directory an example file with all the available options to be used can be found.
 
+To execute the tests just execute the following command:
+
+`python PerformTests.py -f <directory>/<config_file>`
+
 ### Configuration Options
 
 Below you can find an example of a configuration file to execute a set of tests against 6 different endpoints, each one with their unique configuration settings:
