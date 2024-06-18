@@ -25,15 +25,24 @@ class APIClient:
     def encodeData(data):
         return quote(json.dumps(data))
 
-    def get_response(self, data=None,):
-        if self.method == "GET":
-            return self.session.get(self.url, json=data, headers=self.headers)
-        elif self.method == "POST":
-            return self.session.post(self.url, json=data, headers=self.headers)
-        elif self.method == "DELETE":
-            return self.session.delete(self.url, json=data, headers=self.headers)
-        elif self.method == "PUT":
-            return self.session.put(self.url, json=data, headers=self.headers)
+    def get_response(self, data=None,files=None):
+        if files:
+            return self.session.request(
+                method=self.method,
+                url=self.url,
+                headers=self.headers,
+                data=data,
+                files=files
+            )
+        else:
+            if self.method == "GET":
+                return self.session.get(self.url, json=data, headers=self.headers)
+            elif self.method == "POST":
+                return self.session.post(self.url, json=data, headers=self.headers)
+            elif self.method == "DELETE":
+                return self.session.delete(self.url, json=data, headers=self.headers)
+            elif self.method == "PUT":
+                return self.session.put(self.url, json=data, headers=self.headers)
 
     def check_status_code(self,response, expected_status_code ):
         assert response.status_code == expected_status_code, f"Expected status code {expected_status_code}, but got {response.status_code} and {response.text}"

@@ -42,7 +42,7 @@ def load_file_data(location,variables=None):
             return json.loads(content)
         elif '.yaml' in location:
             return yaml.safe_load(content)
-        return {}
+        return content
 
 
 def increment_test_variables(test_data):

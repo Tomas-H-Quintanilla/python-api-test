@@ -1,8 +1,6 @@
-import json
 from .APITester import APIClient
-import yaml
 from .VariableTreating import replace_vars,load_file_data
-
+from io import BytesIO
 stop_tests=False
 
 def is_endpoint_for_execution(endpoint, test_data, endpoint_data):
@@ -46,6 +44,13 @@ def get_payload(endpoint_data,test_data):
     elif "payload" in endpoint_data:
         endpoint_data['payload'] = replace_vars(endpoint_data['payload'], test_data['variables'])
                 
+def get_files(endpoint_data,test_data):
+    
+    if 'files' in endpoint_data:
+        files={}
+        for file_info in endpoint_data['files']:
+            files[file_info['name']]=BytesIO(load_file_data(f'{test_data["name"]}/files/{file_info['path']}', test_data['variables']).encode('utf-8'))
+        endpoint_data['files']=files
 
 
 def execute_endpoint(endpoint, test_data):
@@ -57,6 +62,7 @@ def execute_endpoint(endpoint, test_data):
         return
 
     get_payload(endpoint_data,test_data)
+    get_files(endpoint_data,test_data)
 
     if not "url_file" in endpoint_data:
         request_call(test_data,endpoint_data)
