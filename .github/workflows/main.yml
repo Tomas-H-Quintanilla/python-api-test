@@ -20,10 +20,10 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.12'  # Specify the Python version you need
-
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        pip install -r requirements.txt  # Ensure you have a requirements.txt file listing your dependencies
     - name: Run API tests
       run: |
         python PerformTests.py -f example/example.yaml
