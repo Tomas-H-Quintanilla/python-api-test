@@ -1,28 +1,38 @@
-name: Test API
+name: API Tests Workflow
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:  # Allows manual triggering
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight (UTC)
 
 jobs:
-  test:
-    runs-on: windows-latest
+  api-tests:
+    runs-on: ubuntu-latest
+    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.12'  # Specify the Python version you need
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt  # Ensure you have a requirements.txt file listing your dependencies
-    - name: Run API tests
-      run: |
-        python PerformTests.py -f example/example.yaml
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pytest boto3
+          
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+          
+      - name: Run API tests
+        env:
+          TERRAFORM_VARS: ${{ secrets.TERRAFORM_VARS }}
+        run: |
+          # Using python directly (not pytest) if that's how your test is written
+          python test/get_data.py
