@@ -174,3 +174,5 @@ The order in which the enpoints files are defined does not have to comply with t
 ### More information
 
 For more detail about how to create a configuration file, please refer to the example directory in this same repository.
+
+Another test
