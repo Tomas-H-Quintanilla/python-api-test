@@ -97,7 +97,7 @@ The variables can be defined in the configuration file and in additional files i
 variables:
     NameOfTheVariable:
         type: string | int | dict | array
-        value: -
+        value:
         increment (optional): integer # Only for int variables
 ```
 
@@ -174,5 +174,3 @@ The order in which the enpoints files are defined does not have to comply with t
 ### More information
 
 For more detail about how to create a configuration file, please refer to the example directory in this same repository.
-
-This is to test a pull request.
